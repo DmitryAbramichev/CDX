@@ -1,0 +1,459 @@
+<style>
+/* ASTRATENT / Header v1 — paste the entire file into a single T123 block. */
+#astra-header, #astra-header * { box-sizing: border-box; }
+#astra-header {
+  position: relative;
+  z-index: 100;
+  width: 100%;
+  background: #fff;
+  color: #172235;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#astra-header a { color: inherit; text-decoration: none; }
+#astra-header button, #astra-header input { font: inherit; }
+#astra-header button { -webkit-tap-highlight-color: transparent; }
+#astra-header .ah-inner {
+  width: 100%;
+  min-height: 84px;
+  margin: 0 auto;
+  padding-inline: clamp(16px, 2.8vw, 48px);
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.6vw, 26px);
+}
+#astra-header .ah-top { display: contents; }
+#astra-header .ah-brand {
+  display: flex;
+  align-items: center;
+  gap: clamp(5px, .6vw, 10px);
+  min-width: 0;
+  flex: 0 0 auto;
+}
+#astra-header .ah-logo {
+  display: block;
+  width: clamp(54px, 6.3vw, 100px);
+  height: auto;
+  flex: none;
+}
+#astra-header .ah-brand-text { display: flex; flex-direction: column; white-space: nowrap; }
+#astra-header .ah-name {
+  color: #FF0800;
+  font-size: clamp(16px, 1.55vw, 23px);
+  font-weight: 700;
+  line-height: 1.08;
+}
+#astra-header .ah-subtitle {
+  display: block;
+  margin-top: 4px;
+  color: #0146A8;
+  font-size: clamp(8px, .78vw, 11px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: .01em;
+}
+#astra-header .ah-catalog {
+  height: 44px;
+  padding: 0 clamp(14px, 1.4vw, 22px);
+  border-radius: 8px;
+  background: #0146A8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 14px;
+  white-space: nowrap;
+  flex: none;
+}
+#astra-header .ah-catalog:hover { background: #003B8D; }
+#astra-header .ah-search-wrap {
+  position: relative;
+  flex: 1 1 220px;
+  min-width: 120px;
+}
+#astra-header .ah-search {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  background: #F3F6FA;
+  border-radius: 8px;
+  overflow: hidden;
+}
+#astra-header .ah-search:focus-within { outline: 1px solid #0146A8; }
+#astra-header .ah-search input {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #172235;
+  padding: 0 15px;
+  font-size: 15px;
+  border-radius: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+#astra-header .ah-search input::placeholder { color: #8B95A5; opacity: 1; }
+#astra-header .ah-search button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 44px;
+  flex: 0 0 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #172235;
+  cursor: pointer;
+}
+#astra-header .ah-search input::-webkit-search-cancel-button { cursor: pointer; }
+#astra-header .ah-actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.6vw, 22px);
+  flex: none;
+}
+#astra-header .ah-action {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 38px;
+  padding: 2px;
+  border: 0;
+  background: transparent;
+  color: #172235;
+  cursor: pointer;
+}
+#astra-header .ah-action:hover { color: #0146A8; }
+#astra-header .ah-action span { font-size: clamp(10px, .78vw, 11px); line-height: 1.1; white-space: nowrap; }
+#astra-header .ah-icon {
+  display: block;
+  width: 25px;
+  height: 25px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#astra-header .ah-menu { display: none; }
+#astra-header .ah-dropdown {
+  position: absolute;
+  left: clamp(16px, 2.8vw, 48px);
+  top: calc(100% - 8px);
+  z-index: 200;
+  min-width: 200px;
+  padding: 8px;
+  border: 1px solid #E7EBF2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 8px 24px #17223520;
+}
+#astra-header .ah-dropdown[hidden],
+#astra-header .ah-suggestions[hidden] { display: none !important; }
+#astra-header .ah-dropdown a { display: block; padding: 12px; border-radius: 6px; }
+#astra-header .ah-dropdown a:hover { background: #F3F6FA; }
+/* Suggestion panel is a sibling of the search form, not a native browser popup. */
+#astra-header .ah-suggestions {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 250;
+  width: 100%;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 6px;
+  border: 1px solid #E4EAF2;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 8px 24px #17223522;
+}
+#astra-header .ah-suggestion {
+  display: block;
+  width: 100%;
+  padding: 11px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #172235;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+}
+#astra-header .ah-suggestion:hover,
+#astra-header .ah-suggestion[aria-selected="true"] { background: #F3F6FA; }
+#astra-header .ah-modal {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(380px, calc(100vw - 32px));
+  padding: 26px;
+  border: 0;
+  border-radius: 14px;
+  background: #fff;
+  color: #172235;
+  box-shadow: 0 14px 48px #17223535;
+}
+#astra-header .ah-modal::backdrop { background: #101B2D66; }
+#astra-header .ah-modal h2 { margin: 0 0 12px; font-size: 20px; font-weight: 700; }
+#astra-header .ah-modal p { margin: 0 0 20px; font-size: 15px; line-height: 1.5; }
+#astra-header .ah-modal-close {
+  min-height: 42px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #0146A8;
+  color: #fff;
+  cursor: pointer;
+}
+@media (max-width: 1099px) {
+  #astra-header .ah-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: clamp(16px, 2.8vw, 24px);
+    padding-block: clamp(16px, 2.5vw, 22px) clamp(22px, 3vw, 30px);
+    min-height: 0;
+  }
+  #astra-header .ah-top { display: flex; align-items: center; width: 100%; gap: clamp(5px, 1.4vw, 14px); }
+  #astra-header .ah-menu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 34px;
+    height: 40px;
+    flex: none;
+    border: 0;
+    background: transparent;
+    color: #172235;
+    cursor: pointer;
+  }
+  #astra-header .ah-brand { margin-right: auto; gap: 4px; }
+  #astra-header .ah-logo { width: clamp(26px, 5.2vw, 44px); }
+  #astra-header .ah-name { font-size: clamp(11px, 2.5vw, 18px); }
+  #astra-header .ah-subtitle { display: none; }
+  #astra-header .ah-catalog { display: none; }
+  #astra-header .ah-actions { gap: clamp(2px, 1.1vw, 16px); }
+  #astra-header .ah-action { min-width: 32px; min-height: 40px; padding: 2px; }
+  #astra-header .ah-action span { display: none; }
+  #astra-header .ah-icon { width: clamp(22px, 2.75vw, 27px); height: clamp(22px, 2.75vw, 27px); }
+  #astra-header .ah-search-wrap { flex: none; width: 100%; min-width: 0; }
+  #astra-header .ah-search { height: 46px; }
+}
+@media (max-width: 359px) {
+  #astra-header .ah-inner { padding-inline: 12px; }
+  #astra-header .ah-top { gap: 3px; }
+  #astra-header .ah-menu { width: 28px; }
+  #astra-header .ah-action { min-width: 28px; }
+  #astra-header .ah-name { font-size: 11px; }
+}
+</style>
+
+<header id="astra-header">
+  <div class="ah-inner">
+    <div class="ah-top">
+      <button class="ah-menu" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="astra-menu-list">
+        <svg class="ah-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <a class="ah-brand" href="/" aria-label="ASTRATENT — главная">
+        <img class="ah-logo" src="https://static.tildacdn.com/tild3839-3437-4663-a334-666262636366/____.png" alt="" width="1680" height="695">
+        <span class="ah-brand-text"><span class="ah-name">ASTRATENT.RU</span><span class="ah-subtitle">КАЧЕСТВО · НАДЁЖНОСТЬ · ГАРАНТИЯ</span></span>
+      </a>
+      <div class="ah-actions">
+        <button class="ah-action" type="button" data-section="Избранное" aria-label="Избранное">
+          <svg class="ah-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg><span>Избранное</span>
+        </button>
+        <button class="ah-action" type="button" data-section="Профиль" aria-label="Профиль">
+          <svg class="ah-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2z"/></svg><span>Профиль</span>
+        </button>
+        <button class="ah-action" type="button" data-section="Корзина" aria-label="Корзина">
+          <svg class="ah-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h3l3 13h11l3-9H6"/><circle cx="9" cy="20" r="1"/><circle cx="19" cy="20" r="1"/></svg><span>Корзина</span>
+        </button>
+      </div>
+    </div>
+    <a class="ah-catalog" href="/catalog">
+      <svg class="ah-icon" viewBox="0 0 24 24" style="width:18px;height:18px" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Каталог
+    </a>
+    <div class="ah-search-wrap">
+      <form class="ah-search" role="search" action="/catalog" method="get" autocomplete="off">
+        <input id="astra-search-input" type="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Что вы ищете?" aria-label="Поиск товаров" aria-autocomplete="list" aria-controls="astra-search-suggestions" aria-expanded="false" required>
+        <button type="submit" aria-label="Найти"><svg class="ah-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="M16 16l5 5"/></svg></button>
+      </form>
+      <div id="astra-search-suggestions" class="ah-suggestions" role="listbox" aria-label="Подсказки поиска" hidden></div>
+    </div>
+  </div>
+  <nav id="astra-menu-list" class="ah-dropdown" aria-label="Меню каталога" hidden><a href="/catalog">Каталог товаров</a></nav>
+  <dialog class="ah-modal" aria-labelledby="astra-modal-title">
+    <h2 id="astra-modal-title">Раздел</h2>
+    <p>Этот раздел скоро появится на сайте.</p>
+    <button type="button" class="ah-modal-close">Понятно</button>
+  </dialog>
+</header>
+
+<script>
+(function () {
+  'use strict';
+  const root = document.getElementById('astra-header');
+  if (!root || root.dataset.astraReady === '1') return;
+  root.dataset.astraReady = '1';
+
+  const searchForm = root.querySelector('.ah-search');
+  const searchInput = root.querySelector('#astra-search-input');
+  const suggestionPanel = root.querySelector('.ah-suggestions');
+  const menuButton = root.querySelector('.ah-menu');
+  const menuPanel = root.querySelector('.ah-dropdown');
+  const modal = root.querySelector('.ah-modal');
+  const modalTitle = root.querySelector('#astra-modal-title');
+  const modalClose = root.querySelector('.ah-modal-close');
+  const SEARCH_KEY = 'tfc_query[5166680601]';
+  const STORAGE_KEY = 'astratent-recent-searches';
+  // These are hand-curated search phrases, not live suggestions from Tilda products.
+  const POPULAR_SEARCHES = [
+    'чехлы для лодочных моторов',
+    'чехлы для песочниц',
+    'уличные шторы',
+    'чехлы для колес',
+    'чехлы в багажник',
+    'чехлы для генераторов'
+  ];
+  let visibleSuggestions = [];
+  let activeIndex = -1;
+  let lastUrl = location.href;
+
+  function getQueryFromUrl() {
+    return new URLSearchParams(location.search).get(SEARCH_KEY) || '';
+  }
+
+  function syncSearch() {
+    if (document.activeElement !== searchInput) {
+      searchInput.value = getQueryFromUrl();
+    }
+    hideSuggestions();
+  }
+
+  function loadRecent() {
+    try {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      return Array.isArray(data) ? data.filter(v => typeof v === 'string').slice(0, 6) : [];
+    } catch (_) { return []; }
+  }
+
+  function saveRecent(query) {
+    try {
+      const entries = [query, ...loadRecent().filter(item => item.toLowerCase() !== query.toLowerCase())].slice(0, 6);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    } catch (_) { /* Private browsing may disable storage. Search still works. */ }
+  }
+
+  function hideSuggestions() {
+    suggestionPanel.hidden = true;
+    suggestionPanel.replaceChildren();
+    visibleSuggestions = [];
+    activeIndex = -1;
+    searchInput.setAttribute('aria-expanded', 'false');
+    searchInput.removeAttribute('aria-activedescendant');
+  }
+
+  function renderSuggestions() {
+    const query = searchInput.value.trim().toLowerCase();
+    const all = [...new Set([...loadRecent(), ...POPULAR_SEARCHES])];
+    visibleSuggestions = all.filter(item => !query || item.toLowerCase().includes(query)).slice(0, 6);
+    activeIndex = -1;
+    suggestionPanel.replaceChildren();
+    if (!visibleSuggestions.length) { hideSuggestions(); return; }
+
+    visibleSuggestions.forEach((suggestion, index) => {
+      const option = document.createElement('button');
+      option.type = 'button';
+      option.className = 'ah-suggestion';
+      option.id = 'astra-suggestion-' + index;
+      option.setAttribute('role', 'option');
+      option.setAttribute('aria-selected', 'false');
+      option.textContent = suggestion;
+      option.addEventListener('pointerdown', event => event.preventDefault());
+      option.addEventListener('click', () => submitSearch(suggestion));
+      suggestionPanel.appendChild(option);
+    });
+    suggestionPanel.hidden = false;
+    searchInput.setAttribute('aria-expanded', 'true');
+  }
+
+  function highlightSuggestion(index) {
+    activeIndex = index;
+    Array.from(suggestionPanel.children).forEach((item, i) => {
+      item.setAttribute('aria-selected', String(i === index));
+    });
+    if (index < 0) searchInput.removeAttribute('aria-activedescendant');
+    else searchInput.setAttribute('aria-activedescendant', 'astra-suggestion-' + index);
+  }
+
+  function submitSearch(value) {
+    const query = String(value || '').trim();
+    if (!query) return;
+    searchInput.value = query;
+    saveRecent(query);
+    hideSuggestions();
+    const params = new URLSearchParams();
+    params.set(SEARCH_KEY, query);
+    location.assign('/catalog?' + params.toString());
+  }
+
+  searchForm.addEventListener('submit', event => {
+    event.preventDefault();
+    submitSearch(searchInput.value);
+  });
+  searchInput.addEventListener('focus', renderSuggestions);
+  searchInput.addEventListener('input', renderSuggestions);
+  searchInput.addEventListener('keydown', event => {
+    if (event.key === 'Escape') { hideSuggestions(); return; }
+    if (suggestionPanel.hidden) return;
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      const step = event.key === 'ArrowDown' ? 1 : -1;
+      highlightSuggestion((activeIndex + step + visibleSuggestions.length) % visibleSuggestions.length);
+    } else if (event.key === 'Enter' && activeIndex >= 0) {
+      event.preventDefault();
+      submitSearch(visibleSuggestions[activeIndex]);
+    }
+  });
+
+  function closeMenu() {
+    menuPanel.hidden = true;
+    menuButton.setAttribute('aria-expanded', 'false');
+  }
+  menuButton.addEventListener('click', () => {
+    const opening = menuPanel.hidden;
+    menuPanel.hidden = !opening;
+    menuButton.setAttribute('aria-expanded', String(opening));
+  });
+
+  root.querySelectorAll('.ah-action').forEach(button => {
+    button.addEventListener('click', () => {
+      modalTitle.textContent = button.dataset.section;
+      if (typeof modal.showModal === 'function') modal.showModal();
+    });
+  });
+  modalClose.addEventListener('click', () => modal.close());
+  modal.addEventListener('click', event => { if (event.target === modal) modal.close(); });
+
+  document.addEventListener('click', event => {
+    if (!menuButton.contains(event.target) && !menuPanel.contains(event.target)) closeMenu();
+    if (!searchForm.contains(event.target) && !suggestionPanel.contains(event.target)) hideSuggestions();
+  });
+  window.addEventListener('popstate', syncSearch);
+  window.addEventListener('pageshow', syncSearch);
+  window.setInterval(() => {
+    if (location.href !== lastUrl) { lastUrl = location.href; syncSearch(); }
+  }, 300);
+  syncSearch();
+})();
+</script>
