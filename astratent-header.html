@@ -16,7 +16,7 @@
   width: 100%;
   min-height: 84px;
   margin: 0 auto;
-  padding-inline: clamp(16px, 2.8vw, 48px);
+  padding-inline: clamp(12px, 2.8vw, 48px);
   display: flex;
   align-items: center;
   gap: clamp(12px, 1.6vw, 26px);
@@ -31,14 +31,14 @@
 }
 #astra-header .ah-logo {
   display: block;
-  width: clamp(54px, 6.3vw, 100px);
+  width: clamp(26px, calc(5.4vw + 8px), 100px);
   height: auto;
   flex: none;
 }
 #astra-header .ah-brand-text { display: flex; flex-direction: column; white-space: nowrap; }
 #astra-header .ah-name {
   color: #FF0800;
-  font-size: clamp(16px, 1.55vw, 23px);
+  font-size: clamp(11px, calc(1vw + 8px), 23px);
   font-weight: 700;
   line-height: 1.08;
 }
@@ -46,7 +46,7 @@
   display: block;
   margin-top: 4px;
   color: #0146A8;
-  font-size: clamp(8px, .78vw, 11px);
+  font-size: clamp(10px, calc(.25vw + 8.5px), 12px);
   font-weight: 500;
   line-height: 1.2;
   letter-spacing: .01em;
@@ -147,7 +147,7 @@
 #astra-header .ah-menu { display: none; }
 #astra-header .ah-dropdown {
   position: absolute;
-  left: clamp(16px, 2.8vw, 48px);
+  left: clamp(12px, 2.8vw, 48px);
   top: calc(100% - 8px);
   z-index: 200;
   min-width: 200px;
@@ -215,7 +215,8 @@
   color: #fff;
   cursor: pointer;
 }
-@media (max-width: 1099px) {
+/* At 1024px the brand, actions, catalog and a 220px search fit on one row. */
+@media (max-width: 1023px) {
   #astra-header .ah-inner {
     flex-direction: column;
     align-items: stretch;
@@ -229,7 +230,7 @@
     align-items: center;
     justify-content: center;
     padding: 0;
-    width: 34px;
+    width: clamp(28px, 6vw, 34px);
     height: 40px;
     flex: none;
     border: 0;
@@ -238,23 +239,16 @@
     cursor: pointer;
   }
   #astra-header .ah-brand { margin-right: auto; gap: 4px; }
-  #astra-header .ah-logo { width: clamp(26px, 5.2vw, 44px); }
-  #astra-header .ah-name { font-size: clamp(11px, 2.5vw, 18px); }
-  #astra-header .ah-subtitle { display: none; }
   #astra-header .ah-catalog { display: none; }
   #astra-header .ah-actions { gap: clamp(2px, 1.1vw, 16px); }
-  #astra-header .ah-action { min-width: 32px; min-height: 40px; padding: 2px; }
+  #astra-header .ah-action { min-width: clamp(28px, 6vw, 32px); min-height: 40px; padding: 2px; }
   #astra-header .ah-action span { display: none; }
   #astra-header .ah-icon { width: clamp(22px, 2.75vw, 27px); height: clamp(22px, 2.75vw, 27px); }
   #astra-header .ah-search-wrap { flex: none; width: 100%; min-width: 0; }
   #astra-header .ah-search { height: 46px; }
 }
-@media (max-width: 359px) {
-  #astra-header .ah-inner { padding-inline: 12px; }
-  #astra-header .ah-top { gap: 3px; }
-  #astra-header .ah-menu { width: 28px; }
-  #astra-header .ah-action { min-width: 28px; }
-  #astra-header .ah-name { font-size: 11px; }
+@media (max-width: 599px) {
+  #astra-header .ah-subtitle { display: none; }
 }
 </style>
 
@@ -393,7 +387,10 @@
       item.setAttribute('aria-selected', String(i === index));
     });
     if (index < 0) searchInput.removeAttribute('aria-activedescendant');
-    else searchInput.setAttribute('aria-activedescendant', 'astra-suggestion-' + index);
+    else {
+      searchInput.setAttribute('aria-activedescendant', 'astra-suggestion-' + index);
+      suggestionPanel.children[index].scrollIntoView({ block: 'nearest' });
+    }
   }
 
   function submitSearch(value) {
@@ -414,26 +411,41 @@
   searchInput.addEventListener('focus', renderSuggestions);
   searchInput.addEventListener('input', renderSuggestions);
   searchInput.addEventListener('keydown', event => {
-    if (event.key === 'Escape') { hideSuggestions(); return; }
+    if (event.key === 'Escape') {
+      event.preventDefault(); // Keep native search clearing from reopening suggestions.
+      hideSuggestions();
+      return;
+    }
     if (suggestionPanel.hidden) return;
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       const step = event.key === 'ArrowDown' ? 1 : -1;
-      highlightSuggestion((activeIndex + step + visibleSuggestions.length) % visibleSuggestions.length);
+      const nextIndex = activeIndex < 0
+        ? (step > 0 ? 0 : visibleSuggestions.length - 1)
+        : (activeIndex + step + visibleSuggestions.length) % visibleSuggestions.length;
+      highlightSuggestion(nextIndex);
     } else if (event.key === 'Enter' && activeIndex >= 0) {
       event.preventDefault();
       submitSearch(visibleSuggestions[activeIndex]);
     }
   });
 
-  function closeMenu() {
+  function closeMenu(restoreFocus = false) {
     menuPanel.hidden = true;
     menuButton.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) menuButton.focus();
   }
   menuButton.addEventListener('click', () => {
     const opening = menuPanel.hidden;
     menuPanel.hidden = !opening;
     menuButton.setAttribute('aria-expanded', String(opening));
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !menuPanel.hidden) {
+      event.preventDefault();
+      closeMenu(true);
+    }
   });
 
   root.querySelectorAll('.ah-action').forEach(button => {
